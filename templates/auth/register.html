@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Реєстрація — Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h3 text-center mb-4">
+                    <i class="bi bi-person-plus"></i> Реєстрація
+                </h1>
+
+                {% if error %}
+                <div class="alert alert-danger py-2">{{ error }}</div>
+                {% endif %}
+
+                <form method="post" action="/auth/register" id="register-form">
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Ім'я користувача</label>
+                        <input type="text" id="username" name="username" class="form-control"
+                               placeholder="username" required minlength="3" maxlength="50"
+                               autocomplete="username">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control"
+                               placeholder="email@example.com" required autocomplete="email">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="password">Пароль</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                               required minlength="6" autocomplete="new-password">
+                        <div class="form-text">Мінімум 6 символів</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        Зареєструватися
+                    </button>
+                </form>
+
+                <hr>
+                <p class="text-center mb-0 text-muted small">
+                    Вже маєте акаунт? <a href="/auth/login">Увійти</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

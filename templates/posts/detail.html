@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — Blog{% endblock %}
+
+{% block content %}
+<article class="mb-5">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h1 class="h2 mb-1">{{ post.title }}</h1>
+            <p class="text-muted small mb-0">
+                <i class="bi bi-person"></i>
+                <a href="/profile/{{ post.author.username }}" class="text-decoration-none text-muted">
+                    {{ post.author.username }}
+                </a>
+                &bull;
+                <i class="bi bi-clock"></i> {{ post.created_at.strftime('%d.%m.%Y %H:%M') }}
+            </p>
+        </div>
+        {% if current_user and current_user.id == post.author_id %}
+        <div class="d-flex gap-2 flex-shrink-0 ms-3">
+            <a href="/posts/{{ post.id }}/edit" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-pencil"></i> Редагувати
+            </a>
+            <form method="post" action="/posts/{{ post.id }}/delete"
+                  onsubmit="return confirm('Видалити пост?')">
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash"></i> Видалити
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body post-content">
+            {{ post.content | replace('\n', '<br>') | safe }}
+        </div>
+    </div>
+</article>
+
+<section id="comments">
+    <h3 class="h5 mb-3">
+        <i class="bi bi-chat-dots"></i> Коментарі ({{ post.comments | length }})
+    </h3>
+
+    {% if post.comments %}
+    <div class="mb-4">
+        {% for comment in post.comments %}
+        <div class="card mb-2 shadow-sm" id="comment-{{ comment.id }}">
+            <div class="card-body py-2 px-3">
+                <p class="mb-1">{{ comment.content }}</p>
+                <small class="text-muted d-flex align-items-center gap-2">
+                    <a href="/profile/{{ comment.author.username }}" class="text-decoration-none text-muted fw-semibold">
+                        {{ comment.author.username }}
+                    </a>
+                    <span>{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                    {% if current_user and current_user.id == comment.author_id %}
+                    <form method="post"
+                          action="/posts/{{ post.id }}/comments/{{ comment.id }}/delete"
+                          class="d-inline mb-0"
+                          onsubmit="return confirm('Видалити коментар?')">
+                        <button type="submit" class="btn btn-link btn-sm text-danger p-0">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">Коментарів ще немає. Будьте першим!</p>
+    {% endif %}
+
+    {% if current_user %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title h6 mb-3">Залишити коментар</h5>
+            <form method="post" action="/posts/{{ post.id }}/comments">
+                <div class="mb-3">
+                    <textarea name="content" class="form-control" rows="3"
+                              placeholder="Ваш коментар..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="bi bi-send"></i> Відправити
+                </button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <a href="/auth/login">Увійдіть</a>, щоб залишити коментар.
+    </div>
+    {% endif %}
+</section>
+
+<div class="mt-4">
+    <a href="/posts" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> До всіх постів
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{% if post %}Редагувати пост{% else %}Новий пост{% endif %} — Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h1 class="h2 mb-4">
+            {% if post %}
+            <i class="bi bi-pencil-square"></i> Редагувати пост
+            {% else %}
+            <i class="bi bi-plus-square"></i> Новий пост
+            {% endif %}
+        </h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form method="post"
+                      action="{% if post %}/posts/{{ post.id }}/edit{% else %}/posts{% endif %}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Заголовок</label>
+                        <input type="text" name="title" class="form-control"
+                               value="{{ post.title if post else '' }}"
+                               placeholder="Введіть заголовок..." required maxlength="255">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Зміст</label>
+                        <textarea name="content" class="form-control" rows="14"
+                                  placeholder="Напишіть щось цікаве..." required>{{ post.content if post else '' }}</textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i>
+                            {% if post %}Зберегти зміни{% else %}Опублікувати{% endif %}
+                        </button>
+                        <a href="{% if post %}/posts/{{ post.id }}{% else %}/posts{% endif %}"
+                           class="btn btn-outline-secondary">Скасувати</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
