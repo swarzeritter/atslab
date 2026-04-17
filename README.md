@@ -18,7 +18,7 @@ Simple blog web application built with FastAPI and Jinja2.
 | Templates | Jinja2 + Bootstrap 5 |
 | ORM | SQLAlchemy |
 | Database | SQLite |
-| Auth | JWT (python-jose) + bcrypt (passlib) |
+| Auth | JWT (python-jose) + bcrypt |
 | Server | Uvicorn |
 
 ## Project Structure
