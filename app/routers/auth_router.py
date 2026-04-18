@@ -112,7 +112,7 @@ def forgot_password(
 
     db.query(PasswordResetToken).filter(
         PasswordResetToken.user_id == user.id,
-        PasswordResetToken.used == False,
+        PasswordResetToken.used.is_(False),
     ).update({"used": True})
 
     token_value = secrets.token_urlsafe(32)
@@ -140,7 +140,7 @@ def reset_password_page(
 ):
     reset_token = db.query(PasswordResetToken).filter(
         PasswordResetToken.token == token,
-        PasswordResetToken.used == False,
+        PasswordResetToken.used.is_(False),
         PasswordResetToken.expires_at > datetime.utcnow(),
     ).first()
 
@@ -171,7 +171,7 @@ def reset_password(
 
     reset_token = db.query(PasswordResetToken).filter(
         PasswordResetToken.token == token,
-        PasswordResetToken.used == False,
+        PasswordResetToken.used.is_(False),
         PasswordResetToken.expires_at > datetime.utcnow(),
     ).first()
 
