@@ -12,6 +12,9 @@ run:
 test:
 	pytest tests/ -v
 
+coverage:
+	pytest tests/ --cov=app --cov-report=term-missing
+
 lint:
 	flake8 app/
 	pylint app/ --fail-under=7.0
