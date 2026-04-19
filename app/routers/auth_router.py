@@ -1,5 +1,5 @@
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -18,9 +18,7 @@ templates = Jinja2Templates(directory="templates")
 def register_page(request: Request, current_user=Depends(get_current_user)):
     if current_user:
         return RedirectResponse(url="/posts", status_code=303)
-    return templates.TemplateResponse("auth/register.html", {
-        "request": request, "current_user": None
-    })
+    return templates.TemplateResponse(request, "auth/register.html", {"current_user": None})
 
 
 @router.post("/register")
@@ -32,13 +30,13 @@ def register(
     db: Session = Depends(get_db),
 ):
     if db.query(User).filter(User.username == username).first():
-        return templates.TemplateResponse("auth/register.html", {
-            "request": request, "current_user": None,
+        return templates.TemplateResponse(request, "auth/register.html", {
+            "current_user": None,
             "error": "Ім'я користувача вже зайняте",
         })
     if db.query(User).filter(User.email == email).first():
-        return templates.TemplateResponse("auth/register.html", {
-            "request": request, "current_user": None,
+        return templates.TemplateResponse(request, "auth/register.html", {
+            "current_user": None,
             "error": "Email вже використовується",
         })
 
@@ -57,9 +55,7 @@ def register(
 def login_page(request: Request, current_user=Depends(get_current_user)):
     if current_user:
         return RedirectResponse(url="/posts", status_code=303)
-    return templates.TemplateResponse("auth/login.html", {
-        "request": request, "current_user": None
-    })
+    return templates.TemplateResponse(request, "auth/login.html", {"current_user": None})
 
 
 @router.post("/login")
@@ -71,8 +67,8 @@ def login(
 ):
     user = db.query(User).filter(User.email == email).first()
     if not user or not verify_password(password, user.password_hash):
-        return templates.TemplateResponse("auth/login.html", {
-            "request": request, "current_user": None,
+        return templates.TemplateResponse(request, "auth/login.html", {
+            "current_user": None,
             "error": "Невірний email або пароль",
         })
 
@@ -91,8 +87,8 @@ def logout():
 
 @router.get("/forgot-password")
 def forgot_password_page(request: Request, current_user=Depends(get_current_user)):
-    return templates.TemplateResponse("auth/forgot_password.html", {
-        "request": request, "current_user": current_user
+    return templates.TemplateResponse(request, "auth/forgot_password.html", {
+        "current_user": current_user,
     })
 
 
@@ -105,8 +101,8 @@ def forgot_password(
 ):
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        return templates.TemplateResponse("auth/forgot_password.html", {
-            "request": request, "current_user": current_user,
+        return templates.TemplateResponse(request, "auth/forgot_password.html", {
+            "current_user": current_user,
             "error": "Email не знайдено",
         })
 
@@ -119,14 +115,14 @@ def forgot_password(
     reset_token = PasswordResetToken(
         token=token_value,
         user_id=user.id,
-        expires_at=datetime.utcnow() + timedelta(hours=1),
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
     )
     db.add(reset_token)
     db.commit()
 
     reset_link = f"/auth/reset-password/{token_value}"
-    return templates.TemplateResponse("auth/forgot_password.html", {
-        "request": request, "current_user": current_user,
+    return templates.TemplateResponse(request, "auth/forgot_password.html", {
+        "current_user": current_user,
         "reset_link": reset_link,
     })
 
@@ -141,16 +137,16 @@ def reset_password_page(
     reset_token = db.query(PasswordResetToken).filter(
         PasswordResetToken.token == token,
         PasswordResetToken.used.is_(False),
-        PasswordResetToken.expires_at > datetime.utcnow(),
+        PasswordResetToken.expires_at > datetime.now(timezone.utc),
     ).first()
 
     if not reset_token:
-        return templates.TemplateResponse("auth/reset_password.html", {
-            "request": request, "current_user": current_user,
+        return templates.TemplateResponse(request, "auth/reset_password.html", {
+            "current_user": current_user,
             "error": "Посилання недійсне або термін дії закінчився",
         })
-    return templates.TemplateResponse("auth/reset_password.html", {
-        "request": request, "current_user": current_user, "token": token,
+    return templates.TemplateResponse(request, "auth/reset_password.html", {
+        "current_user": current_user, "token": token,
     })
 
 
@@ -164,20 +160,20 @@ def reset_password(
     current_user=Depends(get_current_user),
 ):
     if password != password_confirm:
-        return templates.TemplateResponse("auth/reset_password.html", {
-            "request": request, "current_user": current_user,
+        return templates.TemplateResponse(request, "auth/reset_password.html", {
+            "current_user": current_user,
             "token": token, "error": "Паролі не співпадають",
         })
 
     reset_token = db.query(PasswordResetToken).filter(
         PasswordResetToken.token == token,
         PasswordResetToken.used.is_(False),
-        PasswordResetToken.expires_at > datetime.utcnow(),
+        PasswordResetToken.expires_at > datetime.now(timezone.utc),
     ).first()
 
     if not reset_token:
-        return templates.TemplateResponse("auth/reset_password.html", {
-            "request": request, "current_user": current_user,
+        return templates.TemplateResponse(request, "auth/reset_password.html", {
+            "current_user": current_user,
             "error": "Посилання недійсне або термін дії закінчився",
         })
 

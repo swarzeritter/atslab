@@ -18,8 +18,8 @@ def list_posts(
     current_user=Depends(get_current_user),
 ):
     posts = db.query(Post).order_by(Post.created_at.desc()).all()
-    return templates.TemplateResponse("posts/list.html", {
-        "request": request, "posts": posts, "current_user": current_user,
+    return templates.TemplateResponse(request, "posts/list.html", {
+        "posts": posts, "current_user": current_user,
     })
 
 
@@ -27,8 +27,8 @@ def list_posts(
 def new_post_page(request: Request, current_user=Depends(get_current_user)):
     if not current_user:
         return RedirectResponse(url="/auth/login", status_code=303)
-    return templates.TemplateResponse("posts/form.html", {
-        "request": request, "current_user": current_user, "post": None,
+    return templates.TemplateResponse(request, "posts/form.html", {
+        "current_user": current_user, "post": None,
     })
 
 
@@ -60,8 +60,8 @@ def post_detail(
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Пост не знайдено")
-    return templates.TemplateResponse("posts/detail.html", {
-        "request": request, "post": post, "current_user": current_user,
+    return templates.TemplateResponse(request, "posts/detail.html", {
+        "post": post, "current_user": current_user,
     })
 
 
@@ -79,8 +79,8 @@ def edit_post_page(
         raise HTTPException(status_code=404, detail="Пост не знайдено")
     if post.author_id != current_user.id:
         raise HTTPException(status_code=403, detail="Немає доступу")
-    return templates.TemplateResponse("posts/form.html", {
-        "request": request, "post": post, "current_user": current_user,
+    return templates.TemplateResponse(request, "posts/form.html", {
+        "post": post, "current_user": current_user,
     })
 
 

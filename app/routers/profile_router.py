@@ -15,8 +15,8 @@ templates = Jinja2Templates(directory="templates")
 def edit_profile_page(request: Request, current_user=Depends(get_current_user)):
     if not current_user:
         return RedirectResponse(url="/auth/login", status_code=303)
-    return templates.TemplateResponse("profile/edit.html", {
-        "request": request, "current_user": current_user,
+    return templates.TemplateResponse(request, "profile/edit.html", {
+        "current_user": current_user,
     })
 
 
@@ -44,6 +44,6 @@ def view_profile(
     user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="Користувача не знайдено")
-    return templates.TemplateResponse("profile/view.html", {
-        "request": request, "profile_user": user, "current_user": current_user,
+    return templates.TemplateResponse(request, "profile/view.html", {
+        "profile_user": user, "current_user": current_user,
     })
