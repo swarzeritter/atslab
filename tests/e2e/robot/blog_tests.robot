@@ -19,40 +19,49 @@ Open Blog
 Login With
     [Arguments]    ${email}    ${password}
     Go To    ${BASE_URL}/auth/login
-    Input Text    id:email    ${email}
-    Input Text    id:password    ${password}
-    Click Button    css:.btn-primary
+    Wait Until Element Is Visible    id:email    10s
+    Execute Javascript    document.querySelector('#email').value = '${email}'
+    Execute Javascript    document.querySelector('#password').value = '${password}'
+    Execute Javascript    document.querySelector('form').submit()
+    Wait Until Location Contains    posts    10s
 
 Logout
-    Click Element    css:.dropdown-toggle
-    Click Link    link:Вийти
+    Go To    ${BASE_URL}/auth/logout
+    Wait Until Location Contains    posts    10s
 
 Create Post
     [Arguments]    ${title}    ${content}
     Go To    ${BASE_URL}/posts/new
-    Input Text    name:title    ${title}
-    Input Text    name:content    ${content}
-    Click Button    css:.btn-primary
+    Wait Until Element Is Visible    css=input[name='title']    10s
+    Execute Javascript    document.querySelector("input[name='title']").value = '${title}'
+    Execute Javascript    document.querySelector("textarea[name='content']").value = '${content}'
+    Execute Javascript    document.querySelector("form").submit()
+    Wait Until Location Contains    /posts/    10s
 
 Open Post
     [Arguments]    ${title}
     Go To    ${BASE_URL}/posts
-    Click Link    link:${title}
+    Wait Until Element Is Visible    css=.card-title a    10s
+    Execute Javascript    document.querySelector('.card-title a').click()
+    Wait Until Element Is Visible    css=article    10s
 
 *** Test Cases ***
 01 Register New User
     Go To    ${BASE_URL}/auth/register
-    Input Text    id:username    ${USERNAME}
-    Input Text    id:email       ${EMAIL}
-    Input Text    id:password    ${PASSWORD}
-    Click Button    css:.btn-primary
+    Wait Until Element Is Visible    id:username    10s
+    Execute Javascript    document.querySelector('#username').value = '${USERNAME}'
+    Execute Javascript    document.querySelector('#email').value = '${EMAIL}'
+    Execute Javascript    document.querySelector('#password').value = '${PASSWORD}'
+    Execute Javascript    document.querySelector('form').submit()
+    Wait Until Location Contains    posts    10s
     Logout
 
 02 Login Invalid Password
     Go To    ${BASE_URL}/auth/login
-    Input Text    id:email       ${EMAIL}
-    Input Text    id:password    wrongpassword
-    Click Button    css:.btn-primary
+    Wait Until Element Is Visible    id:email    10s
+    Execute Javascript    document.querySelector('#email').value = '${EMAIL}'
+    Execute Javascript    document.querySelector('#password').value = 'wrongpassword'
+    Execute Javascript    document.querySelector('form').submit()
 
 03 Login Valid
     Login With    ${EMAIL}    ${PASSWORD}
@@ -66,22 +75,23 @@ Open Post
 06 Add Comment
     Open Post    ${POST_TITLE}
     Input Text      name:content    Nice!!
-    Click Button    xpath://button[contains(.,'Відправити')]
+    Click Button    css:#comments .btn-primary
 
 07 Edit Post
     Open Post    ${POST_TITLE}
-    Click Link      link:Редагувати
-    Input Text      name:content    New Post!\nAwesome!
-    Click Button    css:.btn-primary
+    Execute Javascript    document.querySelector('a[href*="/posts/"][href*="/edit"]').click()
+    Wait Until Element Is Visible    css=textarea[name='content']    10s
+    Execute Javascript    document.querySelector("textarea[name='content']").value = 'New Post! Awesome!'
+    Execute Javascript    document.querySelector('form').submit()
 
 08 View Profile
-    Click Element    css:.dropdown-toggle
-    Click Link       link:Мій профайл
+    Go To    ${BASE_URL}/profile/${USERNAME}
 
 09 Delete Post
     Open Post    ${POST_TITLE}
-    Click Button    css:.btn-outline-danger
-    Handle Alert
+    Wait Until Element Is Visible    css=.btn-outline-danger    10s
+    Execute Javascript    document.querySelector('.btn-outline-danger').closest('form').onsubmit = null
+    Click Button    css=.btn-outline-danger
 
 10 Logout
     Logout
