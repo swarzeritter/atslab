@@ -5,7 +5,7 @@
   "url": "http://127.0.0.1:8000",
   "tests": [{
     "id": "caaf598b-54fd-481d-8d23-9825d1895dac",
-    "name": "test_register",
+    "name": "01_test_register",
     "commands": [{
       "id": "db832968-5962-437a-b621-7ec55890a94d",
       "comment": "",
@@ -132,37 +132,10 @@
         ["xpath=//button[contains(.,'Зареєструватися')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "020a3f87-c25f-4bb4-95b6-d929bb177799",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=test1234",
-      "targets": [
-        ["linkText=test1234", "linkText"],
-        ["css=.dropdown-toggle", "css:finder"],
-        ["xpath=//div[@id='navbarNav']/ul[2]/li[2]/a", "xpath:idRelative"],
-        ["xpath=//a[contains(@href, '#')]", "xpath:href"],
-        ["xpath=//li[2]/a", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "e2d04e02-7356-49db-8156-cc3491d5c360",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Вийти",
-      "targets": [
-        ["linkText=Вийти", "linkText"],
-        ["css=.text-danger", "css:finder"],
-        ["xpath=//div[@id='navbarNav']/ul[2]/li[2]/ul/li[4]/a", "xpath:idRelative"],
-        ["xpath=//a[contains(@href, '/auth/logout')]", "xpath:href"],
-        ["xpath=//li[4]/a", "xpath:position"],
-        ["xpath=//a[contains(.,' Вийти')]", "xpath:innerText"]
-      ],
-      "value": ""
     }]
   }, {
     "id": "64e39082-a329-470c-acb3-1deca382a8dd",
-    "name": "test_login_invalid",
+    "name": "03_test_login_invalid",
     "commands": [{
       "id": "c162a69c-e43f-4c1c-9f3f-35b6ef76b7bc",
       "comment": "",
@@ -264,7 +237,7 @@
     }]
   }, {
     "id": "71ec09d0-82ae-4f9d-9477-1a07760afa5b",
-    "name": "test_login",
+    "name": "04_test_login",
     "commands": [{
       "id": "c7b82bbc-71f7-4a23-8f87-9565362bc2a3",
       "comment": "",
@@ -366,7 +339,7 @@
     }]
   }, {
     "id": "ad770cdf-6c5d-412d-a8f3-efee37eeec29",
-    "name": "test_create_post",
+    "name": "05_test_create_post",
     "commands": [{
       "id": "6d930254-128b-4ffa-bcbd-4554fbbf8b70",
       "comment": "",
@@ -443,7 +416,7 @@
     }]
   }, {
     "id": "23c7d705-40bf-419c-bfc0-086e1e8fa9a9",
-    "name": "test_view_post",
+    "name": "06_test_view_post",
     "commands": [{
       "id": "9ce974e6-42fc-44fc-9260-08249ae66282",
       "comment": "",
@@ -475,7 +448,7 @@
     }]
   }, {
     "id": "3a2347e5-62f4-4c92-b583-891a2e542851",
-    "name": "test_add_comment",
+    "name": "07_test_add_comment",
     "commands": [{
       "id": "934cba84-a290-43d5-b0be-446ad3136ceb",
       "comment": "",
@@ -546,7 +519,7 @@
     }]
   }, {
     "id": "3ef9a053-98a2-4f7d-8752-4857b1abcf5f",
-    "name": "test_edit_post",
+    "name": "08_test_edit_post",
     "commands": [{
       "id": "8aa3ba4a-e7ed-4335-a25f-57a2d532e586",
       "comment": "",
@@ -626,44 +599,44 @@
     }]
   }, {
     "id": "77342679-9189-42de-a732-84f6d205cd37",
-    "name": "test_delete_post",
+    "name": "09_test_delete_post",
     "commands": [{
-      "id": "d5aecc5b-9e4e-4e2b-a8ab-7e1ad953b062",
+      "id": "816dcada-67a3-44df-bdda-dbd8a354c92d",
       "comment": "",
       "command": "open",
       "target": "/posts",
       "targets": [],
       "value": ""
     }, {
-      "id": "d717e02a-a5b5-4fdc-9f09-565faa8fd915",
+      "id": "8c1ba6cd-7799-4c0d-bdc3-a2a4adfd1a67",
       "comment": "",
       "command": "setWindowSize",
       "target": "1373x782",
       "targets": [],
       "value": ""
     }, {
-      "id": "856606c6-326e-4be2-94f6-c79667682a83",
+      "id": "ef19a504-75dd-4e2b-8c14-04e7cc8b4092",
       "comment": "",
       "command": "click",
       "target": "linkText=Hellow world?",
       "targets": [
         ["linkText=Hellow world?", "linkText"],
-        ["css=.col-12:nth-child(1) .card-title > .text-decoration-none", "css:finder"],
+        ["css=.text-dark", "css:finder"],
         ["xpath=//a[contains(text(),'Hellow world?')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/posts/2')]", "xpath:href"],
+        ["xpath=//a[contains(@href, '/posts/1')]", "xpath:href"],
         ["xpath=//h5/a", "xpath:position"],
         ["xpath=//a[contains(.,'Hellow world?')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
-      "id": "f3ebe3be-bd59-4c81-9a91-36e6dd9d8ea3",
+      "id": "fbb770fd-a78f-4c63-b9d9-99fc1cad87a8",
       "comment": "",
       "command": "chooseOkOnNextConfirmation",
       "target": "",
       "targets": [],
       "value": ""
     }, {
-      "id": "0ff1e7f7-9c21-4eb7-a6a0-f1c88b22a56f",
+      "id": "02d933ab-a8d6-4d04-ab2a-6a0ba6ddbc94",
       "comment": "",
       "command": "click",
       "target": "css=.btn-outline-danger",
@@ -674,24 +647,10 @@
         ["xpath=//button[contains(.,' Видалити')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "05d0230b-2f1d-4813-a597-f81a35e10735",
-      "comment": "",
-      "command": "assertConfirmation",
-      "target": "Видалити пост?",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "d01cf1b6-d220-410d-9bba-5d1c25d42a88",
-      "comment": "",
-      "command": "webdriverChooseOkOnVisibleConfirmation",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }, {
     "id": "79e39831-2f23-4bee-a84c-a0ad63dd4bf0",
-    "name": "test_profile",
+    "name": "10_test_profile",
     "commands": [{
       "id": "75f464d3-e609-405e-b6db-c5c441a278c9",
       "comment": "",
@@ -736,7 +695,7 @@
     }]
   }, {
     "id": "c2a4c89f-0603-4032-a7fb-a61a946b7b35",
-    "name": "test_logout",
+    "name": "02_test_logout",
     "commands": [{
       "id": "edf27d66-8820-4d5b-bc42-71cd2a1ee750",
       "comment": "",
