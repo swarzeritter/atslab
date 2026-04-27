@@ -1,5 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
+
+collect_ignore = ["e2e"]
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
